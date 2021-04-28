@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433"  
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  captrans:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__MyConnectionString=server=sql.data;Database=mydb;User Id=sa;Password=Pass@word 
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
