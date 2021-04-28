@@ -29,6 +29,10 @@ namespace CapTrans
 
             _currentTransaction = await Database.BeginTransactionAsync();
 
+            // The below isn't ideal as it only persists the tranaction on the current thread
+            // and copies it to nested call. Causing all sorted of issues with the transaction
+            //_currentTransaction = Database.BeginTransaction(_publisher, false)
+
             return _currentTransaction;
         }
 
